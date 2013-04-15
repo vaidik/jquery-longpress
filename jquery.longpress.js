@@ -3,7 +3,7 @@
  * events on mobile devices and desktop borwsers.
  *
  * @name longpress
- * @version 0.1
+ * @version 0.1.2
  * @requires jQuery v1.2.3+
  * @author Vaidik Kapoor
  * @license MIT License - http://www.opensource.org/licenses/mit-license.php
@@ -30,12 +30,13 @@
             // mousedown or touchstart callback
             function mousedown_callback(e) {
                 mouse_down_time = new Date().getTime();
+                var context = $(this);
 
                 // set a timeout to call the longpress callback when time elapses
                 timeout = setTimeout(function() {
-                    try {
-                        longCallback(e);
-                    } catch(error) {
+                    if (typeof longCallback === "function") {
+                        longCallback.call(context, e);
+                    } else {
                         $.error('Callback required for long press. You provided: ' + typeof longCallback);
                     }
                 }, duration);
@@ -50,7 +51,7 @@
 
                     // call the shortCallback if provided
                     if (typeof shortCallback === "function") {
-                        shortCallback(e);
+                        shortCallback.call($(this), e);
                     } else if (typeof shortCallback === "undefined") {
                         ;
                     } else {
