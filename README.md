@@ -3,6 +3,13 @@
 Longpress is a jQuery plugin that makes it easy to support long press
 events on mobile devices and desktop borwsers.
 
+## Native Library
+
+If you want something native and more low level than the jQuery implementation,
+take a look at [longpress.js][lp] that is also written by me.
+
+[lp]: https://github.com/vaidik/longpress.js
+
 ## Quick Usage
 
 ```html
