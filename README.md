@@ -20,7 +20,7 @@ take a look at [longpress.js][lp] that is also written by me.
 
 $('#button').longpress(function() {
     // longpress callback
-    alert('You just longpress-ed a button.
+    alert('You just longpress-ed a button.');
 });
 
 ```
