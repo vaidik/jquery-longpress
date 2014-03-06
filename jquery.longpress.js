@@ -58,7 +58,12 @@
                         $.error('Optional callback for short press should be a function.');
                     }
                 }
-            };
+            }
+
+            // cancel long press event if the finger was moved (for touch screens)
+            function touchmove_callback(e) {
+                clearTimeout(timeout);
+            }
 
             // Browser Support
             $this.on('mousedown', mousedown_callback);
@@ -67,6 +72,7 @@
             // Mobile Support
             $this.on('touchstart', mousedown_callback);
             $this.on('touchend', mouseup_callback);
+            $this.on('touchmove', touchmove_callback);
         });
     };
 }(jQuery));
