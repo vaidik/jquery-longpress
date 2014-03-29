@@ -60,19 +60,20 @@
                 }
             }
 
-            // cancel long press event if the finger was moved (for touch screens)
-            function touchmove_callback(e) {
+            // cancel long press event if the finger or mouse was moved
+            function move_callback(e) {
                 clearTimeout(timeout);
             }
 
             // Browser Support
             $this.on('mousedown', mousedown_callback);
             $this.on('mouseup', mouseup_callback);
+            $this.on('mousemove', move_callback);
 
             // Mobile Support
             $this.on('touchstart', mousedown_callback);
             $this.on('touchend', mouseup_callback);
-            $this.on('touchmove', touchmove_callback);
+            $this.on('touchmove', move_callback);
         });
     };
 }(jQuery));
