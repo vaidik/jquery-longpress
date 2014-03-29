@@ -9,7 +9,7 @@
  * @license MIT License - http://www.opensource.org/licenses/mit-license.php
  *
  * For usage and examples, check out the README at:
- * http://github.com/jquery-longpress/
+ * http://github.com/vaidik/jquery-longpress/
  *
  * Copyright (c) 2008-2013, Vaidik Kapoor (kapoor [*dot*] vaidik -[at]- gmail [*dot*] com)
  */
