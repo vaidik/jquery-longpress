@@ -29,6 +29,7 @@
 
             // mousedown or touchstart callback
             function mousedown_callback(e) {
+                clearTimeout(timeout);
                 mouse_down_time = new Date().getTime();
                 var context = $(this);
 
