@@ -25,11 +25,16 @@
 
             // to keep track of how long something was pressed
             var mouse_down_time;
+            var mouse_up_x, mouse_up_y, mouse_down_x, mouse_down_y;
             var timeout;
+            var short_call_time = 0;
 
             // mousedown or touchstart callback
             function mousedown_callback(e) {
-                mouse_down_time = new Date().getTime();
+                mouse_down_x = e.originalEvent.touches ? e.originalEvent.touches[0].clientX : e.originalEvent.clientX;
+                mouse_down_y = e.originalEvent.touches ? e.originalEvent.touches[0].clientY : e.originalEvent.clientY;
+
+                mouse_down_time = Date.now();
                 var context = $(this);
 
                 // set a timeout to call the longpress callback when time elapses
@@ -44,19 +49,26 @@
 
             // mouseup or touchend callback
             function mouseup_callback(e) {
-                var press_time = new Date().getTime() - mouse_down_time;
-                if (press_time < duration) {
-                    // cancel the timeout
-                    clearTimeout(timeout);
+                mouse_up_x = e.originalEvent.touches ? e.originalEvent.touches[0].clientX : e.originalEvent.clientX;
+                mouse_up_y = e.originalEvent.touches ? e.originalEvent.touches[0].clientY : e.originalEvent.clientY;
 
-                    // call the shortCallback if provided
-                    if (typeof shortCallback === "function") {
-                        shortCallback.call($(this), e);
-                    } else if (typeof shortCallback === "undefined") {
+                if(Math.abs(mouse_up_x - mouse_down_x) > 100 || Math.abs(mouse_up_y - mouse_down_y) > 100) return;
+
+                if(Date.now() - mouse_down_time >= duration) return;
+
+                clearTimeout(timeout);
+                if (typeof shortCallback === "function") {
+
+                  // prevent double-firing for touch devices
+                  // (mouseup, touchend)
+                  if(Date.now() - short_call_time > 50) {
+                    shortCallback.call($(this), e);
+                  }
+                  short_call_time = Date.now();
+                } else if (typeof shortCallback === "undefined") {
                         ;
-                    } else {
-                        $.error('Optional callback for short press should be a function.');
-                    }
+                } else {
+                    $.error('Optional callback for short press should be a function.');
                 }
             }
 
