@@ -15,6 +15,12 @@
  */
 
 (function($) {
+    // use modernizr Touch Events detect
+    // to handle Mobile shortpressHandler trigger twice bug
+    var bool;
+    if (('ontouchstart' in window) || window.DocumentTouch && document instanceof DocumentTouch) {
+      bool = true;
+    }
     $.fn.longpress = function(longCallback, shortCallback, duration) {
         if (typeof duration === "undefined") {
             duration = 500;
@@ -65,15 +71,18 @@
                 clearTimeout(timeout);
             }
 
+            if(bool){
+              // Mobile Support
+              $this.on('touchstart', mousedown_callback);
+              $this.on('touchend', mouseup_callback);
+              $this.on('touchmove', move_callback);
+              return;
+            }
             // Browser Support
             $this.on('mousedown', mousedown_callback);
             $this.on('mouseup', mouseup_callback);
             $this.on('mousemove', move_callback);
 
-            // Mobile Support
-            $this.on('touchstart', mousedown_callback);
-            $this.on('touchend', mouseup_callback);
-            $this.on('touchmove', move_callback);
         });
     };
 }(jQuery));
